@@ -31,6 +31,13 @@ Vagrant.configure("2") do |config|
       :hostname => "srvprod-pipeline",
       :box => IMAGE_NAME,
       :memory => DEFAULT_MEMORY,
+      :ip => "192.168.5.6",
+      :cpu => DEFAULT_CPU
+    },
+    {
+      :hostname => "srvbdd-pipeline",
+      :box => IMAGE_NAME,
+      :memory => DEFAULT_MEMORY,
       :ip => "192.168.5.7",
       :cpu => DEFAULT_CPU
     },
@@ -58,6 +65,9 @@ Vagrant.configure("2") do |config|
           node.vm.provision "ansible" do |ansible|
             ansible.playbook = "playbook.yml"
           end
+        end
+        if machine[:hostname] == "srvbdd-pipeline"
+          node.vm.provision "shell", path: "install_srvpostgres.sh"
         end
       end
     end
