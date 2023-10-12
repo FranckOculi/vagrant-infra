@@ -31,11 +31,18 @@ Vagrant.configure("2") do |config|
       :hostname => "srvprod-pipeline",
       :box => IMAGE_NAME,
       :memory => DEFAULT_MEMORY,
-      :ip => "192.168.5.6",
+      :ip => "192.168.5.5",
       :cpu => DEFAULT_CPU
     },
     {
       :hostname => "srvbdd-pipeline",
+      :box => IMAGE_NAME,
+      :memory => DEFAULT_MEMORY,
+      :ip => "192.168.5.6",
+      :cpu => DEFAULT_CPU
+    },
+    {
+      :hostname => "registry-pipeline",
       :box => IMAGE_NAME,
       :memory => DEFAULT_MEMORY,
       :ip => "192.168.5.7",
@@ -62,15 +69,17 @@ Vagrant.configure("2") do |config|
           service ssh restart
         SHELL
         if machine[:hostname] == "p1jenkins-pipeline"
-          node.vm.provision "ansible" do |ansible|
-            ansible.playbook = "playbook.yml"
-          end
+          # node.vm.provision "ansible" do |ansible|
+          #   ansible.playbook = "playbook.yml"
+          # end
+          node.vm.provision "shell", path: "install_p1jenkins.sh"
         end
         if machine[:hostname] == "srvbdd-pipeline"
           node.vm.provision "shell", path: "install_srvpostgres.sh"
         end
+        if machine[:hostname] == "registry-pipeline"
+          node.vm.provision "shell", path: "install_registry.sh"
+        end
       end
     end
   end
-  
-  
