@@ -48,6 +48,13 @@ Vagrant.configure("2") do |config|
       :ip => "192.168.5.7",
       :cpu => DEFAULT_CPU
     },
+    {
+      :hostname => "gitlab-pipeline",
+      :box => IMAGE_NAME,
+      :memory => MAIN_MEMORY,
+      :ip => "192.168.5.10",
+      :cpu => DEFAULT_CPU
+    },
   ]
 
     servers.each do |machine|
@@ -79,6 +86,9 @@ Vagrant.configure("2") do |config|
         end
         if machine[:hostname] == "registry-pipeline"
           node.vm.provision "shell", path: "install_registry.sh"
+        end
+        if machine[:hostname] == "gitlab-pipeline"
+          node.vm.provision "shell", path: "install_gitlab.sh"
         end
       end
     end
