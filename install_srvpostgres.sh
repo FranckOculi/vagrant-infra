@@ -11,6 +11,7 @@ apt-get update -qq >/dev/null
 apt-get install -qq -y vim git wget curl >/dev/null
 apt-get install -qq -y postgresql-11 >/dev/null
 sudo -u postgres bash -c "psql -c \"CREATE USER vagrant WITH PASSWORD 'vagrant';\""
+sudo -u postgres bash -c "psql -c \"CREATE DATABASE test OWNER vagrant;\""
 sudo -u postgres bash -c "psql -c \"CREATE DATABASE dev OWNER vagrant;\""
 sudo -u postgres bash -c "psql -c \"CREATE DATABASE stage OWNER vagrant;\""
 sudo -u postgres bash -c "psql -c \"CREATE DATABASE prod OWNER vagrant;\""
