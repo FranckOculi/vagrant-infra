@@ -12,8 +12,6 @@ echo "
 LC_CTYPE="en_US.UTF-8"
 LC_ALL="en_US.UTF-8"
 " >>/etc/default/locale
-# export LC_CTYPE="en_US.UTF-8"
-# export LC_ALL="en_US.UTF-8"
 apt install -y gitlab-ce
 gitlab-ctl reconfigure
 echo "END - install gitlab"
