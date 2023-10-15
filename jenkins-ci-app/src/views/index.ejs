@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+		<link rel="stylesheet" type="text/css" href="/style.css" />
+	</head>
+	<body class="body">
+		<%- include('../../public/templates/header.ejs') -%> <% if(error) { %>
+		<div><%= error %></div>
+		<% } else { %>
+		<div class="filters">
+			<form id="form" action="">
+				<label for="email"></label>
+				<input
+					type="text"
+					id="email"
+					placeholder="dupont@google.com"
+					name="email"
+				/>
+				<label for="domain"></label>
+				<input
+					type="text"
+					id="domain"
+					placeholder="Nom de domaine"
+					name="domain"
+				/>
+				<label for="per_page"></label>
+				<input
+					type="number"
+					min="5"
+					max="50"
+					value="25"
+					step="5"
+					id="per_page"
+					placeholder="Nombre logs"
+					name="per_page"
+				/>
+				<label for="current_page"></label>
+				<input
+					min="1"
+					max="<%=pagination.last_page%>"
+					value="1"
+					type="number"
+					id="current_page"
+					placeholder="Page"
+					name="current_page"
+				/>
+				<input type="submit" id="find" value="Rechercher" />
+			</form>
+		</div>
+		<table class="logs_container">
+			<thead>
+				<tr class="thead_tr">
+					<th class="date">Date</th>
+					<th class="email_th">Email</th>
+					<th class="domain_th">Domaine</th>
+					<th class="type_th">Type</th>
+					<th>Erreur</th>
+				</tr>
+			</thead>
+			<tbody>
+				<% if(logs.length === 0) { %>
+				<tr class="content">
+					<td colspan="20" style="text-align: center">
+						<span> Aucun résultat </span>
+					</td>
+				</tr>
+				<% } else for(var i=0; i < logs.length; i++) { %>
+				<tr class="content">
+					<td><span class="date grey"><%= logs[i].created_at %></span></td>
+					<td><span class="email bold blue"><%= logs[i].email %></span></td>
+					<td><span class="domain"><%= logs[i].domain %></span></td>
+					<td><span class="type"> <%= logs[i].type %> </span></td>
+					<td>
+						<span class="error red"><%= logs[i].message %> </span>
+						<details class="error_infos">
+							<summary>Détails</summary>
+							<%= logs[i].stack %>
+						</details>
+					</td>
+				</tr>
+				<% } %>
+			</tbody>
+		</table>
+		<% } %>
+	</body>
+	<script src="./index.js"></script>
+</html>
