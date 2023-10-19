@@ -1,0 +1,68 @@
+variables:
+  DOCKER_IMAGE: docker:24.0.2-cli
+  ENV_FILE: /home/server/gitlab_runner/.env.server
+  REGISTER_USER: ${FILE} | select-string 'REGISTER_USER' | %{$_.line.split('=')[1]}
+  REGISTER_PASS: ${FILE} | select-string 'REGISTER_PASS' | %{$_.line.split('=')[1]}
+  IMAGE_NAME: ${REGISTER_USER}/app_log-$CI_MERGE_REQUEST_TARGET_BRANCH_NAME
+  IMAGE_TAG: ${CI_COMMIT_TAG}
+  SERVER_USER: ${FILE} | select-string 'SERVER_USER' | %{$_.line.split('=')[1]}
+  SERVER_NAME: ${FILE} | select-string 'SERVER_NAME_$CI_MERGE_REQUEST_TARGET_BRANCH_NAME' | %{$_.line.split('=')[1]}
+  SERVER_APP_PATH: ${FILE} | select-string 'SERVER_APP_PATH' | %{$_.line.split('=')[1]}
+
+image: node:18.12.1
+
+cache:
+  paths:
+    - node_modules/
+
+workflow:
+  rules:
+    - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "test" || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "dev" || $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "main"
+
+stages:
+  - install
+  - tests
+  - build
+  - delivery
+  - deploy
+
+install_packages:
+  stage: install
+  image: ${DOCKER_IMAGE}
+  before_script:
+    - cp $ENV_FILE .env
+  script:
+    - npm install
+
+run_tests:
+  stage: tests
+  script: npm run test
+
+build_image:
+  stage: build
+  image: ${DOCKER_IMAGE}
+  script: 
+    - docker build -t ${IMAGE_NAME}:${IMAGE_TAG} .
+  artifacts:
+    paths:
+      - build
+
+delivery_artefact:
+  stage: delivery
+  before script:
+    - docker login -u ${REGISTER_USER} -p ${REGISTER_PASS}
+  script: 
+    - docker push ${IMAGE_NAME}:${IMAGE_TAG}
+  dependencies:
+    - build
+ 
+deploy_app:
+  stage: deploy
+  before_script:
+    - apt-get update -qq
+    - apt-get install -y -qq sshpass
+    - export SSHPASS=$SSH_PASSWORD
+  script:
+    - sshpass -e scp -o stricthostkeychecking=no -r build ${SERVER_USER}@${SERVER_NAME}:${SERVER_APP_PATH}
+  dependencies:
+    - build

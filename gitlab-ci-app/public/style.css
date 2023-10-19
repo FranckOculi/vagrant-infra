@@ -1,0 +1,146 @@
+* {
+  font-family: "Poppins", sans-serif;
+  font-size: 0.9rem;
+  margin: 0;
+}
+.body {
+  background-color: rgb(229, 229, 231);
+}
+.header {
+  background-color: #171749;
+  width: 100vw;
+  padding: 10px 0;
+}
+.header_content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 90%;
+  margin: auto;
+}
+img {
+  width: 200px;
+}
+h1 {
+  color: white;
+  font-size: 18px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+.header_end {
+  width: 200px;
+}
+.filters {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  margin: 12px auto;
+  gap: 10px;
+}
+#mode {
+  cursor: pointer;
+}
+input {
+  border-radius: 5px;
+  border: 1px solid black;
+  padding: 5px;
+  width: 150px;
+}
+#per_page,
+#current_page {
+  width: 100px;
+}
+#find {
+  cursor: pointer;
+  background-color: inherit;
+  border: none;
+  background-color: rgb(73, 73, 170);
+  border-radius: 5px;
+  color: white;
+  padding: 7px;
+}
+.logs_container {
+  width: 80%;
+  margin: 10px auto;
+  padding: 30px;
+  border-radius: 20px;
+}
+.thead_tr {
+  border-bottom: 4px solid gray;
+}
+table {
+  border-collapse: collapse;
+  background-color: rgb(251, 251, 253);
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  border-radius: 8px;
+}
+.content {
+  min-height: calc(max-content + 20px);
+}
+th {
+  text-align: left;
+  padding: 20px 8px;
+}
+tr {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.09);
+}
+&:last-child {
+  border-bottom: none;
+}
+.date {
+  width: 112px;
+}
+.email,
+.domain,
+.type {
+  min-width: 120px;
+  border-radius: 5px;
+  padding: 5px;
+}
+.domain_th {
+  width: 110px;
+}
+.email {
+  text-align: center;
+  background-color: rgba(57, 84, 255, 0.171);
+}
+.email_th,
+.type_th {
+  text-align: center;
+}
+.error {
+  margin: 0;
+}
+summary {
+  cursor: pointer;
+}
+.error_infos {
+  overflow: scroll;
+}
+.type {
+  background-color: rgb(233, 60, 60);
+  color: white;
+  font-weight: 500;
+  padding: 5px;
+  text-align: center;
+  width: 120px;
+}
+.type_th {
+  width: 130px;
+}
+span {
+  display: block;
+  padding: 0 10px;
+}
+.red {
+  color: red;
+}
+.bold {
+  font-weight: 550;
+}
+.blue {
+  color: rgb(72, 72, 209);
+}
+.grey {
+  color: grey;
+}
